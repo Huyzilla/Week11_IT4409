@@ -6,11 +6,14 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.get("/", (req, res) => {
+    res.send("OK");
+});
 const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) {
-  console.error("Missing MONGO_URI in .env");
-  process.exit(1);
+    console.error("Missing MONGO_URI in .env");
+    process.exit(1);
 }
 
 mongoose
@@ -170,5 +173,5 @@ app.delete("/api/users/:id", async (req, res) => {
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
-    console.log("Server running on http://localhost:3001");
+    console.log(`Server running on port ${PORT}`);
 });
