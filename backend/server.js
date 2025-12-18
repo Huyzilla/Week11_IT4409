@@ -1,16 +1,22 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+require("dotenv").config();
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error("Missing MONGO_URI in .env");
+  process.exit(1);
+}
 
 mongoose
-    .connect("mongodb+srv://20225201:20225201@cluster0.z0v5qgh.mongodb.net/IT4409")
+    .connect(MONGO_URI)
     .then(() => console.log("Connected to MongoDB"))
     .catch((err) => console.error("MongoDB Error:", err));
-
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -161,6 +167,8 @@ app.delete("/api/users/:id", async (req, res) => {
     }
 });
 
-app.listen(3001, () => {
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
     console.log("Server running on http://localhost:3001");
 });
